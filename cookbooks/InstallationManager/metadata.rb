@@ -1,0 +1,7 @@
+name             'InstallationManager'
+maintainer       'rohit company'
+maintainer_email 'rohit.phoenix@gmail.com'
+license          'Apache 2.0'
+description      'Installs/Configures InstallationManager'
+long_description 'Installs/Configures InstallationManager'
+version          '0.1.0'
