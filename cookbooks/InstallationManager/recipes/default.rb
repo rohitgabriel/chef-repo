@@ -62,8 +62,11 @@ directory imshared_dir do
 end
 
 execute 'unzip' do
-  command 'apt-get install unzip'
-  creates 'unzip installer'
+  command value_for_platform(
+"debian" => { "default" => "aptitude install unzip" },
+"ubuntu" => { "default" => "apt-get install unzip" },
+"rhel" => { "default" => "yum install unzip" }
+)
   action :run
 end
 
@@ -71,7 +74,8 @@ remote_file binary_path do
   owner 'root'
   group 'root'
   mode '0644'
-  source "http://192.168.1.4/agent.installer.linux.gtk.x86_64_1.8.3000.20150606_0047.zip"
+  #source "http://9.191.4.193/agent.installer.linux.gtk.x86_64_1.8.3000.20150606_0047.zip"
+  source "#{node['InstallationManager']['webserver']}/agent.installer.linux.gtk.x86_64_#{node['InstallationManager']['im_version']}.zip"
   action :create
   notifies :run, 'execute[extract-InstallationManager]', :immediately
 end
@@ -85,6 +89,11 @@ end
 
 template "#{binary_dir}/#{node['InstallationManager']['im-responsefile']}" do
   source 'IM-responsefile.erb'
+  variables(
+  im: "#{node['InstallationManager']['im_install_dir']}",
+  version: "#{node['InstallationManager']['im_version']}",
+  id: "#{node['InstallationManager']['im_version']}"
+  )
   owner 'root'
   group 'root'
   mode '0644'
@@ -92,7 +101,7 @@ template "#{binary_dir}/#{node['InstallationManager']['im-responsefile']}" do
 end
 
 execute 'install-InstallationManager' do
-  command "#{binary_dir}/userinstc -log #{binary_dir}/instman.log -acceptLicense -dataLocation /opt/IBM/IMAgentData"
+  command "#{binary_dir}/userinstc -log #{binary_dir}/instman.log -acceptLicense -dataLocation #{node['InstallationManager']['imagentdata_install_dir']}"
   cwd binary_dir
   action :run
 end
