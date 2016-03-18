@@ -50,7 +50,14 @@ binaries.each { | package_name |
 	  group 'root'
 	  mode '0644'
 	  source "#{node['WebSphereAS85']['webserver']}/#{package_name}"
-	    require 'digest'
+	  notifies :create, "ruby_block[Validate Package Checksum]", :immediately
+	  end  
+
+
+ruby_block "Validate Package Checksum" do
+  action :run
+  block do
+  	require 'digest'
 	    checksum = Digest::SHA256.file("#{wasbinary_dir}/#{package_name}").hexdigest
 	    #raise "count = #{count}"
 	    if checksum != checksums[count]
@@ -58,7 +65,8 @@ binaries.each { | package_name |
         else
         	count += 1
 	    end
-	  end  
+	end
+end
 
 	execute 'extract-WAS' do
 		action :run
