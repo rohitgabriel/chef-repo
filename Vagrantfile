@@ -7,6 +7,6 @@ chef.provisioning_path = "/etc/chef"
 chef.chef_server_url = "https://api.chef.io/organizations/cheftested"
 chef.validation_key_path = "/home/rohitg/git/chef-repo/.chef/cheftested-validator.pem"
 chef.validation_client_name = "cheftested-validator"
-chef.node_name = "IMNode"
+chef.node_name = "WAS85Node"
 end
 end
