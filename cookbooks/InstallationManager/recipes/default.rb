@@ -77,11 +77,11 @@ remote_file binary_path do
   #source "http://9.191.4.193/agent.installer.linux.gtk.x86_64_1.8.3000.20150606_0047.zip"
   source "#{node['InstallationManager']['webserver']}/agent.installer.linux.gtk.x86_64_#{node['InstallationManager']['im_version']}.zip"
   checksum "#{node['InstallationManager']['im-sha256sum']}"
-  notifies :create, "ruby_block[Validate Package Checksum]", :immediately
+  notifies :create, "ruby_block[Validate IM Package Checksum]", :immediately
   #not_if { redis_exists? && node['redisio']['safe_install'] }
 end
 
-ruby_block "Validate Package Checksum" do
+ruby_block "Validate IM Package Checksum" do
   action :run
   block do
     require 'digest'
@@ -94,7 +94,7 @@ ruby_block "Validate Package Checksum" do
 end
 
 execute 'extract-InstallationManager' do
-  command "unzip #{binary_path}"
+  command "unzip -o #{binary_path}"
   cwd binary_dir
   # Only run after notified by remote_file download
   action :run

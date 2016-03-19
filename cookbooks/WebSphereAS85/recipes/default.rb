@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include_recipe 'InstallationManager'
+#include_recipe 'InstallationManager'
 
 
 wasbinary_dir = "#{Chef::Config[:file_cache_path]}/WASbinaries"
@@ -58,8 +58,9 @@ ruby_block "Validate Package Checksum" do
   action :run
   block do
   	require 'digest'
+
 	    checksum = Digest::SHA256.file("#{wasbinary_dir}/#{package_name}").hexdigest
-	    #raise "count = #{count}"
+	    
 	    if checksum != checksums[count]
 	      raise "#{package_name} #{count} Downloaded package Checksum #{checksum} does not match known checksum #{checksums[count]}"
         else
@@ -70,9 +71,11 @@ end
 
 	execute 'extract-WAS' do
 		action :run
-	  		command "unzip #{package_name}"
+	  		#command "unzip -o #{package_name}"
+        command "cat #{package_name} >> looptest"
 	  		cwd wasbinary_dir
 	end
+  #raise "count after extract = #{count}"
 }
 
 template "#{wasbinary_dir}/#{node['WebSphereAS85']['was-responsefile']}" do
