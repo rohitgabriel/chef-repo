@@ -90,3 +90,5 @@ execute 'filetransfer' do
   command 'scp ftplogin@9.191.4.227:/opt/IBM/HTTPServer/docroot/WAS_V8.5.5_1_OF_3 /'
   action :run
 end
+
+Chef::Log.info("#{knownhosts} has IP address #{node["ipaddress"]}")
