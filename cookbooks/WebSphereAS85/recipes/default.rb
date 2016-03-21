@@ -50,30 +50,26 @@ binaries.each { | package_name |
 	  group 'root'
 	  mode '0644'
 	  source "#{node['WebSphereAS85']['webserver']}/#{package_name}"
-	  notifies :create, "ruby_block[Validate Package Checksum]", :immediately
-	  end  
-
-
-ruby_block "Validate Package Checksum" do
-  action :run
-  block do
-  	require 'digest'
-
-	    checksum = Digest::SHA256.file("#{wasbinary_dir}/#{package_name}").hexdigest
-	    
-	    if checksum != checksums[count]
-	      raise "#{package_name} #{count} Downloaded package Checksum #{checksum} does not match known checksum #{checksums[count]}"
-        else
-        	count += 1
-	    end
-	end
-end
+	  #notifies :create, "ruby_block[Validate Package Checksum]", :immediately
+	end  
+  ruby_block "Validate Package Checksum" do
+    action :run
+    block do
+      require 'digest'
+      checksum = Digest::SHA256.file("#{wasbinary_dir}/#{package_name}").hexdigest
+      if checksum != checksums[count]
+        raise "#{package_name} #{count} Downloaded package Checksum #{checksum} does not match known checksum #{checksums[count]}"
+      #else
+        #count += 1
+      end
+      count += 1
+    end
+  end
 
 	execute 'extract-WAS' do
 		action :run
-	  		#command "unzip -o #{package_name}"
-        command "cat #{package_name} >> looptest"
-	  		cwd wasbinary_dir
+      command "unzip -o #{package_name}"
+	  	cwd wasbinary_dir
 	end
   #raise "count after extract = #{count}"
 }
