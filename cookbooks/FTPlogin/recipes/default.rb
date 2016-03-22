@@ -18,18 +18,18 @@
 #
 
 
-wastest_dir = "#{Chef::Config[:file_cache_path]}/was-test"
-wastestfile = "#{wastest_dir}/WAS_V8.5.5_1_OF_3"
-ssh_dir = "/root/.ssh"
-authkeys = "#{ssh_dir}/authorized_keys"
-knownhosts = "#{ssh_dir}/known_hosts"
+# wastest_dir = "#{Chef::Config[:file_cache_path]}/was-test"
+# wastestfile = "#{wastest_dir}/WAS_V8.5.5_1_OF_3"
+# ssh_dir = "/root/.ssh"
+# authkeys = "#{ssh_dir}/authorized_keys"
+# knownhosts = "#{ssh_dir}/known_hosts"
 
-directory wastest_dir do
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
-end
+# directory wastest_dir do
+#   owner 'root'
+#   group 'root'
+#   mode '0755'
+#   action :create
+# end
 
 
 # file '/root/.netrc' do
@@ -63,12 +63,12 @@ end
 #   source "#{node['FTPlogin']['ftp-host']}/WAS_V8.5.5_1_OF_3"
 # end
 
-directory ssh_dir do
-  owner 'root'
-  group 'root'
-  mode '0700'
-  action :create
-end
+# directory ssh_dir do
+#   owner 'root'
+#   group 'root'
+#   mode '0700'
+#   action :create
+# end
 
 # remote_file authkeys do
 #   owner 'root'
@@ -86,9 +86,16 @@ end
 #   source "#{node['FTPlogin']['webserver']}/known_hosts"
 # end
 
-execute 'filetransfer' do
-  command 'scp ftplogin@9.191.4.227:/opt/IBM/HTTPServer/docroot/WAS_V8.5.5_1_OF_3 /'
-  action :run
-end
+# execute 'filetransfer' do
+#   command 'scp ftplogin@9.191.4.227:/opt/IBM/HTTPServer/docroot/WAS_V8.5.5_1_OF_3 /'
+#   action :run
+# end
 
-Chef::Log.info("#{knownhosts} has IP address #{node["ipaddress"]}")
+Chef::Log.info("This VM has IP address #{node["ipaddress"]} and hostname: #{node["hostname"]};  WAS binary bath is #{node['FTPlogin']['wasbinpath']}")
+
+# execute 'filetransfer' do
+#   command "./versionInfo.sh > #{wastestfile}"
+#   cwd "#{node['FTPlogin']['wasbinpath']}"
+#   action :run
+# end
+
