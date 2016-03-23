@@ -23,10 +23,10 @@ wasbinary_dir = "#{Chef::Config[:file_cache_path]}/WASbinaries"
 binaries = [ "#{node['WebSphereAS85']['package-name-1']}", "#{node['WebSphereAS85']['package-name-2']}", "#{node['WebSphereAS85']['package-name-3']}"]
 checksums = [ "#{node['WebSphereAS85']['package1-sha256sum']}", "#{node['WebSphereAS85']['package2-sha256sum']}", "#{node['WebSphereAS85']['package3-sha256sum']}"]
 
-was_dir = "/opt/IBM/WebSphere"
-im_dir = "/opt/IBM/InstallationManager"
-imagentdata_dir = "/opt/IBM/IMAgentData"
-imshared_dir = "/opt/IBM/IMShared"
+was_dir = "#{node['WebSphereAS85']['was_install_dir']}"
+im_dir = "#{node['WebSphereAS85']['imcl_install_dir']}"
+imagentdata_dir = "#{node['WebSphereAS85']['imagentdata_install_dir']}"
+imshared_dir = "#{node['WebSphereAS85']['imshared_install_dir']}"
 
 directory wasbinary_dir do
   owner 'root'
