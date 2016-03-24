@@ -27,6 +27,14 @@ was_dir = "#{node['WebSphereAS85']['was_install_dir']}"
 im_dir = "#{node['WebSphereAS85']['imcl_install_dir']}"
 imagentdata_dir = "#{node['WebSphereAS85']['imagentdata_install_dir']}"
 imshared_dir = "#{node['WebSphereAS85']['imshared_install_dir']}"
+wasuserhome = "#{node['WebSphereAS85']['wasuserhome']}"
+
+directory wasuserhome do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
 
 directory wasbinary_dir do
   owner 'root'
@@ -96,3 +104,7 @@ execute 'install-WAS85' do
   action :run
 end
 
+directory wasbinary_dir do
+  action :delete
+  recursive true
+end

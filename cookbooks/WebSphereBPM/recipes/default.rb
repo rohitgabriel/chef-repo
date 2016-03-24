@@ -19,9 +19,129 @@
 
 
 #Pre Installation tasks for WebSphereBPM
+include_recipe 'InstallationManager::default'
+
+
+bpmbinary_dir = "#{Chef::Config[:file_cache_path]}/BPMbinaries"
+binaries = [ "#{node['WebSphereBPM']['package-name-1']}", "#{node['WebSphereBPM']['package-name-2']}", "#{node['WebSphereBPM']['package-name-3']}"]
+checksums = [ "#{node['WebSphereBPM']['package1-sha256sum']}", "#{node['WebSphereBPM']['package2-sha256sum']}", "#{node['WebSphereBPM']['package3-sha256sum']}"]
+
+was_dir = "#{node['WebSphereBPM']['was_install_dir']}"
+im_dir = "#{node['WebSphereBPM']['imcl_install_dir']}"
+imagentdata_dir = "#{node['WebSphereBPM']['imagentdata_install_dir']}"
+imshared_dir = "#{node['WebSphereBPM']['imshared_install_dir']}"
+bpmuserhome = "#{node['WebSphereBPM']['bpmuserhome']}"
+ssh_dir = "/root/.ssh"
+
+
 Chef::Log.info("Updating limits.conf file")
 execute 'limitsconf' do
-  command "for x in "* soft stack 32768" "* hard stack 32768" "* soft nofile 65536" "* hard nofile 65536" "* soft nproc 16384" "* hard nproc 16384" ; do echo "$x" >> /etc/security/limits.conf; done"
+  command "for x in '* soft stack 32768' '* hard stack 32768' '* soft nofile 65536' '* hard nofile 65536' '* soft nproc 16384' '* hard nproc 16384' ; do echo '$x' >> /etc/security/limits.conf; done"
   action :run
 end
 
+
+directory bpmbinary_dir do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+directory 'was_dir' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+directory 'bpmuserhome' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+directory 'ssh_dir' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+Chef::Log.info("Creating OS group bpmgrp: #{node['WebSphereBPM']['bpmgroup']} ")
+group "#{node['WebSphereBPM']['bpmgroup']}" do
+action :create
+end
+
+Chef::Log.info("Creating OS user bpmuser and adding to bpmgrp")
+user "#{node['WebSphereBPM']['bpmuser']}" do
+  group "#{node['WebSphereBPM']['bpmgroup']}"
+  home "#{node['WebSphereBPM']['bpmuserhome']}"
+  action :create
+end
+
+Chef::Log.info("Setting up passwordless ssh to #{node['WebSphereBPM']['binaryhost']}")
+	apt_package 'sshpass' do
+		action :install
+	end
+	execute 'passwordless-ssh' do
+	  action :run
+      command "yes | ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''; sshpass -p W1zplay11 ssh -o 'StrictHostKeyChecking no' ftplogin@9.191.4.227 mkdir -p .ssh; cat /root/.ssh/id_rsa.pub | sshpass -p W1zplay11 ssh -o 'StrictHostKeyChecking no' ftplogin@9.191.4.227 'cat >> .ssh/authorized_keys'"
+	  cwd bpmbinary_dir
+	end
+
+count = 0
+
+binaries.each { | package_name |
+	# remote_file "#{wasbinary_dir}/#{package_name}" do
+	#   owner 'root'
+	#   group 'root'
+	#   mode '0644'
+	#   source "#{node['WebSphereBPM']['webserver']}/#{package_name}"
+	# end  
+Chef::Log.info("copying packages")
+	execute 'copy-BPM' do
+	  action :run
+      command "scp #{node['WebSphereBPM']['scploginuser']}@#{node['WebSphereBPM']['binaryhost']}:/opt/IBM/HTTPServer/docroot/#{package_name} #{bpmbinary_dir}"
+	  cwd bpmbinary_dir
+	end
+
+  ruby_block "Validate Package Checksum" do
+    action :run
+    block do
+      require 'digest'
+      checksum = Digest::SHA256.file("#{bpmbinary_dir}/#{package_name}").hexdigest
+      if checksum != checksums[count]
+        raise "#{package_name} #{count} Downloaded package Checksum #{checksum} does not match known checksum #{checksums[count]}"
+      end
+      count += 1
+    end
+  end
+
+	execute 'extract-BPM' do
+	  action :run
+      #command "tar -xvzf --overwrite #{package_name}"
+      command "cat #{package_name} >> looptest"
+	  cwd bpmbinary_dir
+	end
+}
+
+template "#{bpmbinary_dir}/#{node['WebSphereBPM']['bpm-responsefile']}" do
+  source 'BPM-responsefile.erb'
+  variables(
+  bpminstallpath: "#{node['WebSphereBPM']['bpm-installpath']}",
+  imsharedpath: "#{node['WebSphereBPM']['imshared_install_dir']}",
+  repolocation: "#{bpmbinary_dir}"
+  )
+  owner 'root'
+  group 'root'
+  mode '0644'
+  #notifies :run, 'execute[install-bpm]', :immediately
+end
+
+# execute 'install-bpm' do
+#   command "#{node['WebSphereBPM']['imcl-path']} -acceptLicense -showProgress input '#{wasbinary_dir}/#{node['WebSphereBPM']['was-responsefile']}' -dataLocation '#{node['WebSphereBPM']['imagentdata_install_dir']}' -log '#{wasbinary_dir}/WAS85NDinstall.log'"
+#   cwd wasbinary_dir
+#   action :run
+# end

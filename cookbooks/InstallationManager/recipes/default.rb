@@ -130,3 +130,8 @@ ruby_block 'check InstallationManager' do
    end
  end 
  
+
+directory binary_dir do
+  action :delete
+  recursive true
+end
