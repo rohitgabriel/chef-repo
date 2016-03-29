@@ -53,13 +53,11 @@ end
 count = 0
 
 binaries.each { | package_name |
-	remote_file "#{wasbinary_dir}/#{package_name}" do
-	  owner 'root'
-	  group 'root'
-	  mode '0644'
-	  source "#{node['WebSphereAS85']['webserver']}/#{package_name}"
-	  #notifies :create, "ruby_block[Validate Package Checksum]", :immediately
-	end  
+	 execute 'copy-BPM' do
+    action :run
+      command "scp #{node['WebSphereAS85']['ftploginuser']}@#{node['WebSphereAS85']['binaryhost']}:#{node['WebSphereAS85']['ftppath']}/#{package_name} #{wasbinary_dir}"
+    cwd bpmbinary_dir
+  end
   ruby_block "Validate Package Checksum" do
     action :run
     block do

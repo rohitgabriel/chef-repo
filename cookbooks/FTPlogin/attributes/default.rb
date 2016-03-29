@@ -1,4 +1,4 @@
-default['FTPlogin']['ftp-host'] = 'ftp://9.191.4.227/../../opt/IBM/HTTPServer/docroot'
-default['FTPlogin']['webserver'] = 'http://9.191.4.227'
-default['FTPlogin']['scphost'] = '9.191.4.227'
-default['FTPlogin']['wasbinpath'] = '/opt/IBM/WebSphere/AppServer/bin'
+default['FTPlogin']['binaryhost'] = '192.168.1.7'
+default['FTPlogin']['ftploginuser'] = 'ftplogin'
+default['FTPlogin']['binarydir'] = '/opt/ibm/HTTPServer/docroot'
+default['FTPlogin']['ftploginpwd'] = 'W1zplay11'

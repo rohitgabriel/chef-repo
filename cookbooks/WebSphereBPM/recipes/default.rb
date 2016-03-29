@@ -19,7 +19,7 @@
 
 
 #Pre Installation tasks for WebSphereBPM
-include_recipe 'InstallationManager::default'
+#include_recipe 'InstallationManager::default'
 
 
 bpmbinary_dir = "#{Chef::Config[:file_cache_path]}/BPMbinaries"
@@ -81,16 +81,6 @@ user "#{node['WebSphereBPM']['bpmuser']}" do
   action :create
 end
 
-Chef::Log.info("Setting up passwordless ssh to #{node['WebSphereBPM']['binaryhost']}")
-	apt_package 'sshpass' do
-		action :install
-	end
-	execute 'passwordless-ssh' do
-	  action :run
-      command "yes | ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''; sshpass -p W1zplay11 ssh -o 'StrictHostKeyChecking no' ftplogin@9.191.4.227 mkdir -p .ssh; cat /root/.ssh/id_rsa.pub | sshpass -p W1zplay11 ssh -o 'StrictHostKeyChecking no' ftplogin@9.191.4.227 'cat >> .ssh/authorized_keys'"
-	  cwd bpmbinary_dir
-	end
-
 count = 0
 
 binaries.each { | package_name |
@@ -103,7 +93,7 @@ binaries.each { | package_name |
 Chef::Log.info("copying packages")
 	execute 'copy-BPM' do
 	  action :run
-      command "scp #{node['WebSphereBPM']['scploginuser']}@#{node['WebSphereBPM']['binaryhost']}:/opt/IBM/HTTPServer/docroot/#{package_name} #{bpmbinary_dir}"
+      command "scp #{node['WebSphereBPM']['ftploginuser']}@#{node['WebSphereBPM']['binaryhost']}:/opt/ibm/HTTPServer/docroot/#{package_name} #{bpmbinary_dir}"
 	  cwd bpmbinary_dir
 	end
 
@@ -121,8 +111,8 @@ Chef::Log.info("copying packages")
 
 	execute 'extract-BPM' do
 	  action :run
-      #command "tar -xvzf --overwrite #{package_name}"
-      command "cat #{package_name} >> looptest"
+      command "tar -xvzf #{package_name}"
+      # command "cat #{package_name} >> looptest"
 	  cwd bpmbinary_dir
 	end
 }

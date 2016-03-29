@@ -19,6 +19,8 @@
 
 binary_dir = "#{Chef::Config[:file_cache_path]}/IMbinaries"
 binary_path = "#{binary_dir}/agent.installer.linux.gtk.x86_64_#{node['InstallationManager']['im_version']}.zip"
+binaries = [ "#{node['InstallationManager']['package-name-1']}"]
+checksums = [ "#{node['InstallationManager']['package1-sha256sum']}"]
 base_dir = "/opt/IBM"
 im_dir = "/opt/IBM/InstallationManager"
 imagentdata_dir = "/opt/IBM/IMAgentData"
@@ -70,35 +72,43 @@ execute 'unzip' do
   action :run
 end
 
-remote_file binary_path do
-  owner 'root'
-  group 'root'
-  mode '0644'
-  #source "http://9.191.4.193/agent.installer.linux.gtk.x86_64_1.8.3000.20150606_0047.zip"
-  source "#{node['InstallationManager']['webserver']}/agent.installer.linux.gtk.x86_64_#{node['InstallationManager']['im_version']}.zip"
-  checksum "#{node['InstallationManager']['im-sha256sum']}"
-  notifies :create, "ruby_block[Validate IM Package Checksum]", :immediately
-  #not_if { redis_exists? && node['redisio']['safe_install'] }
-end
+# remote_file binary_path do
+#   owner 'root'
+#   group 'root'
+#   mode '0644'
+#   source "#{node['InstallationManager']['webserver']}/agent.installer.linux.gtk.x86_64_#{node['InstallationManager']['im_version']}.zip"
+#   checksum "#{node['InstallationManager']['im-sha256sum']}"
+#   notifies :create, "ruby_block[Validate IM Package Checksum]", :immediately
+# end
 
-ruby_block "Validate IM Package Checksum" do
-  action :run
-  block do
-    require 'digest'
-    checksum = Digest::SHA256.file("#{binary_dir}/agent.installer.linux.gtk.x86_64_#{node['InstallationManager']['im_version']}.zip").hexdigest
-    if checksum != node['InstallationManager']['im-sha256sum']
-      raise "Downloaded Tarball Checksum #{checksum} does not match known checksum #{node['InstallationManager']['im-sha256sum']}"
+count = 0
+
+binaries.each { | package_name |
+Chef::Log.info("copying packages")
+  execute 'copy-im' do
+    action :run
+      command "scp #{node['InstallationManager']['ftploginuser']}@#{node['InstallationManager']['binaryhost']}:#{node['InstallationManager']['ftppath']}/#{package_name} #{binary_dir}"
+    cwd binary_dir
+  end
+
+  ruby_block "Validate Package Checksum" do
+    action :run
+    block do
+      require 'digest'
+      checksum = Digest::SHA256.file("#{binary_dir}/#{package_name}").hexdigest
+      if checksum != checksums[count]
+        raise "#{package_name} #{count} Downloaded package Checksum #{checksum} does not match known checksum #{checksums[count]}"
+      end
+      count += 1
     end
   end
-  notifies :run, 'execute[extract-InstallationManager]', :immediately
-end
 
-execute 'extract-InstallationManager' do
-  command "unzip -o #{binary_path}"
-  cwd binary_dir
-  # Only run after notified by remote_file download
-  action :run
-end
+  execute 'extract-im' do
+    action :run
+      command "unzip -o #{package_name}"
+    cwd binary_dir
+  end
+}
 
 template "#{binary_dir}/#{node['InstallationManager']['im-responsefile']}" do
   source 'IM-responsefile.erb'
@@ -117,18 +127,17 @@ execute 'install-InstallationManager' do
   command "#{binary_dir}/userinstc -log #{binary_dir}/instman.log -acceptLicense -dataLocation #{node['InstallationManager']['imagentdata_install_dir']}"
   cwd binary_dir
   action :run
-  notifies :run, "ruby_block[check InstallationManager]", :immediately
 end
 
 
-ruby_block 'check InstallationManager' do
-   block do
-     imclinstalledversion = `#{node['InstallationManager']['imcl-path']} listInstalledPackages`.to_str.strip
-     if imclinstalledversion.include? ("node['InstallationManager']['imcl-packageid']").to_str.strip
-      raise "Installed version :#{imclinstalledversion}: does not match expected version :#{node['InstallationManager']['imcl-packageid']}:"
-    end
-   end
- end 
+# ruby_block 'check InstallationManager' do
+#    block do
+#      imclinstalledversion = `#{node['InstallationManager']['imcl-path']} listInstalledPackages`.to_str.strip
+#      if imclinstalledversion.include? ("node['InstallationManager']['imcl-packageid']").to_str.strip
+#       raise "Installed version :#{imclinstalledversion}: does not match expected version :#{node['InstallationManager']['imcl-packageid']}:"
+#     end
+#    end
+#  end 
  
 
 directory binary_dir do
