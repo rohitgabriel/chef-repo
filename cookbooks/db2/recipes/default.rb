@@ -23,6 +23,10 @@ binaries = [ "#{node['db2']['package-name-1']}"]
 checksums = [ "#{node['db2']['package1-sha256sum']}"]
 base_dir = "/opt/ibm/db2"
 
+package ['rpm','libaio1','libaio1-dev'] do
+  action :install
+end
+
 directory db2binary_dir do
   owner 'root'
   group 'root'
@@ -81,23 +85,12 @@ template "#{db2binary_dir}/#{node['db2']['db2-responsefile']}" do
   #notifies :run, 'execute[install-db2]', :immediately
 end
 
-
 execute 'install-db2' do
-  command "#{db2binary_dir}/server/db2setup -r #{db2binary_dir}/#{node['db2']['db2-responsefile']}"
+  command "#{db2binary_dir}/ese/db2setup -r #{db2binary_dir}/#{node['db2']['db2-responsefile']}"
   cwd db2binary_dir
   action :run
 end
 
-
-# ruby_block 'check db2' do
-#    block do
-#      imclinstalledversion = `#{node['db2']['imcl-path']} listInstalledPackages`.to_str.strip
-#      if imclinstalledversion.include? ("node['db2']['imcl-packageid']").to_str.strip
-#       raise "Installed version :#{imclinstalledversion}: does not match expected version :#{node['db2']['imcl-packageid']}:"
-#     end
-#    end
-#  end 
- 
 
 directory db2binary_dir do
   action :delete
