@@ -24,6 +24,21 @@ group "#{node['db2']['db2fence1-group']}" do
 action :create
 end
 
+
+directory "#{node['db2']['db2fence1-home']}" do
+  owner "#{node['db2']['db2fence1-user']}"
+  group "#{node['db2']['db2fence1-group']}"
+  mode '0755'
+  action :create
+end
+
+directory "#{node['db2']['db2inst1-home']}" do
+  owner "#{node['db2']['db2inst1-user']}"
+  group "#{node['db2']['db2inst1-group']}"
+  mode '0755'
+  action :create
+end
+
 user "#{node['db2']['db2fence1-user']}" do
   group "#{node['db2']['db2fence1-group']}"
   home "#{node['db2']['db2fence1-home']}"
@@ -37,20 +52,6 @@ end
 user "#{node['db2']['db2inst1-user']}" do
   group "#{node['db2']['db2inst1-group']}"
   home "#{node['db2']['db2inst1-home']}"
-  action :create
-end
-
-directory "#{node['db2']['db2fence1-home']}" do
-  owner "#{node['db2']['db2fence1-user']}"
-  group "#{node['db2']['db2fence1-group']}"
-  mode '0755'
-  action :create
-end
-
-directory "#{node['db2']['db2inst1-home']}" do
-  owner "#{node['db2']['db2inst1-user']}"
-  group "#{node['db2']['db2inst1-group']}"
-  mode '0755'
   action :create
 end
 
