@@ -23,9 +23,18 @@ binaries = [ "#{node['db2']['package-name-1']}"]
 checksums = [ "#{node['db2']['package1-sha256sum']}"]
 base_dir = "/opt/ibm/db2"
 
-package ['rpm','libaio1','libaio1-dev'] do
-  action :install
+#package ['rpm','libaio1'] do
+#  action :install
+#end
+
+apt_package 'rpm' do
+    action :install
 end
+
+apt_package 'libaio1' do
+    action :install
+end
+
 
 directory db2binary_dir do
   owner 'root'

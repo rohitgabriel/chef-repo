@@ -18,6 +18,11 @@
 
 
 Chef::Log.info("Setting up passwordless ssh to #{node['FTPlogin']['binaryhost']}")
+execute 'install-db2' do
+  command "apt-get update; apt-mark hold grub-pc; apt-get -y upgrade"
+  action :run
+end
+
   apt_package 'sshpass' do
     action :install
   end
@@ -25,4 +30,3 @@ Chef::Log.info("Setting up passwordless ssh to #{node['FTPlogin']['binaryhost']}
     action :run
       command "yes | ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''; sshpass -p #{node['FTPlogin']['ftploginpwd']} ssh -o 'StrictHostKeyChecking no' #{node['FTPlogin']['ftploginuser']}@#{node['FTPlogin']['binaryhost']} mkdir -p .ssh; cat /root/.ssh/id_rsa.pub | sshpass -p #{node['FTPlogin']['ftploginpwd']} ssh -o 'StrictHostKeyChecking no' #{node['FTPlogin']['ftploginuser']}@#{node['FTPlogin']['binaryhost']} 'cat >> .ssh/authorized_keys'"
   end
-

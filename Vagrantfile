@@ -8,6 +8,10 @@ chef.chef_server_url = "https://api.chef.io/organizations/cheftested"
 chef.validation_key_path = "/home/roxo/git/chef-repo/.chef/cheftested-validator.pem"
 chef.validation_client_name = "cheftested-validator"
 chef.node_name = "BPMNode"
-config.berkshelf.enabled = true
+config.vm.network "public_network", ip: "192.168.1.101", :mac => "0800275E27B2"
+config.vm.provider "virtualbox" do |v|
+  v.memory = 3000 
+  v.cpus = 2 
+end
 end
 end

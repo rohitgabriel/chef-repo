@@ -35,9 +35,11 @@ ssh_dir = "/root/.ssh"
 
 
 Chef::Log.info("Updating limits.conf file")
-execute 'limitsconf' do
-  command "for x in '* soft stack 32768' '* hard stack 32768' '* soft nofile 65536' '* hard nofile 65536' '* soft nproc 16384' '* hard nproc 16384' ; do echo '$x' >> /etc/security/limits.conf; done"
-  action :run
+template "/etc/security/limits.conf" do
+  source 'limits-conf.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
 end
 
 
@@ -84,7 +86,7 @@ end
 count = 0
 
 binaries.each { | package_name |
-	# remote_file "#{wasbinary_dir}/#{package_name}" do
+	# remote_file "#{bpmbinary_dir}/#{package_name}" do
 	#   owner 'root'
 	#   group 'root'
 	#   mode '0644'
@@ -116,13 +118,12 @@ Chef::Log.info("copying packages")
 	  cwd bpmbinary_dir
 	end
 }
-
 template "#{bpmbinary_dir}/#{node['WebSphereBPM']['bpm-responsefile']}" do
   source 'BPM-responsefile.erb'
   variables(
   bpminstallpath: "#{node['WebSphereBPM']['bpm-installpath']}",
   imsharedpath: "#{node['WebSphereBPM']['imshared_install_dir']}",
-  repolocation: "#{bpmbinary_dir}"
+  repolocation: "#{bpmbinary_dir}/repository/repos_64bit"
   )
   owner 'root'
   group 'root'
@@ -130,8 +131,11 @@ template "#{bpmbinary_dir}/#{node['WebSphereBPM']['bpm-responsefile']}" do
   #notifies :run, 'execute[install-bpm]', :immediately
 end
 
-# execute 'install-bpm' do
-#   command "#{node['WebSphereBPM']['imcl-path']} -acceptLicense -showProgress input '#{wasbinary_dir}/#{node['WebSphereBPM']['was-responsefile']}' -dataLocation '#{node['WebSphereBPM']['imagentdata_install_dir']}' -log '#{wasbinary_dir}/WAS85NDinstall.log'"
-#   cwd wasbinary_dir
-#   action :run
-# end
+ execute 'install-bpm' do
+  path = "#{node['WebSphereBPM']['bpm-path']}"
+  path = path.strip
+  not_if do FileTest.directory?(path) end
+  command "'#{node['WebSphereBPM']['imcl-path']}' -acceptLicense -showProgress input '#{bpmbinary_dir}/#{node['WebSphereBPM']['bpm-responsefile']}' -dataLocation '#{node['WebSphereBPM']['imagentdata_install_dir']}' -log '#{bpmbinary_dir}/BPMinstall.log'"
+   cwd bpmbinary_dir
+   action :run
+ end

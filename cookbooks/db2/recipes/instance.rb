@@ -20,23 +20,9 @@
 
 binary_dir = "#{Chef::Config[:file_cache_path]}"
 
+
 group "#{node['db2']['db2fence1-group']}" do
 action :create
-end
-
-
-directory "#{node['db2']['db2fence1-home']}" do
-  owner "#{node['db2']['db2fence1-user']}"
-  group "#{node['db2']['db2fence1-group']}"
-  mode '0755'
-  action :create
-end
-
-directory "#{node['db2']['db2inst1-home']}" do
-  owner "#{node['db2']['db2inst1-user']}"
-  group "#{node['db2']['db2inst1-group']}"
-  mode '0755'
-  action :create
 end
 
 user "#{node['db2']['db2fence1-user']}" do
@@ -53,7 +39,23 @@ user "#{node['db2']['db2inst1-user']}" do
   group "#{node['db2']['db2inst1-group']}"
   home "#{node['db2']['db2inst1-home']}"
   action :create
+  password "$1$dqaVML9L$0ZGltm8AbRO6IkbhmHmYT1"
 end
+
+directory "#{node['db2']['db2fence1-home']}" do
+  owner "#{node['db2']['db2fence1-user']}"
+  group "#{node['db2']['db2fence1-group']}"
+  mode '0755'
+  action :create
+end
+
+directory "#{node['db2']['db2inst1-home']}" do
+  owner "#{node['db2']['db2inst1-user']}"
+  group "#{node['db2']['db2inst1-group']}"
+  mode '0755'
+  action :create
+end
+
 
 template "#{binary_dir}/#{node['db2']['db2inst1-INS']}" do
   source 'db2inst1-INS.erb'

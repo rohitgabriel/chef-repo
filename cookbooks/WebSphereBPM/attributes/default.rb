@@ -17,10 +17,23 @@ default['WebSphereBPM']['ftploginuser'] = 'ftplogin'
 default['WebSphereBPM']['ftppath'] = '/opt/ibm/HTTPServer/docroot'
 default['WebSphereBPM']['bpm-responsefile'] = 'BPM-responsefile.xml'
 default['WebSphereBPM']['bpm-installpath'] = '/opt/IBM/WebSphere/BPM/v8.5'
+default['WebSphereBPM']['imcl-path'] = '/opt/IBM/InstallationManager/eclipse/tools/imcl'
+default['WebSphereBPM']['bpm-path'] = '/opt/IBM/WebSphere/BPM/v8.5/bin'
+default['WebSphereBPM']['bpmdmgrbin'] = '/opt/IBM/WebSphere/BPM/v8.5/profiles/Dmgr/bin'
 
 
 
+default['WebSphereBPM']['db2password'] = 'W1zplay11'
+default['WebSphereBPM']['bpmuser'] = 'bpmadmin'
+default['WebSphereBPM']['bpmpassword'] = 'W1zplay11'
 
+default['WebSphereBPM']['Advanced-PS-ThreeClusters-DB2-props'] = 'Advanced-PS-ThreeClusters-DB2.properties' 
+default['WebSphereBPM']['bpmdmgrnodename'] = 'DMGRNode'
+default['WebSphereBPM']['bpmcellname'] = 'BPMCell'
+default['WebSphereBPM']['bpmdmgrpath'] = '/opt/IBM/WebSphere/BPM/v8.5/profiles/Dmgr'
+default['WebSphereBPM']['bpmdmgrname'] = 'Dmgr'
+default['WebSphereBPM']['bpmdmgrsoapport'] = '8879'
+default['WebSphereBPM']['bpmnodename'] = 'ManagedAppServers'
 
 
 
