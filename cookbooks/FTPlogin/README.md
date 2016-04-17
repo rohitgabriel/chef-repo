@@ -1,4 +1,4 @@
-WebSphereAS85 Cookbook
+FTPlogin Cookbook
 ======================
 This cookbook creates a password-less SSH login on ubuntu.
 I use this cookbook to scp binaries for my other cookbooks WebSphere Application Server and WebSphere BPM

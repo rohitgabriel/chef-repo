@@ -1,68 +1,30 @@
 WebSphereAS85 Cookbook
 ======================
-TODO: Enter the cookbook description here.
-
-e.g.
-This cookbook makes your favorite breakfast sandwich.
+WebSphereAS85 Cookbook
+======================
+This cookbook creates a password-less SSH login on ubuntu.
+I use this cookbook to scp binaries for my other cookbooks WebSphere Application Server and WebSphere BPM
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
-
-e.g.
-#### packages
-- `toaster` - WebSphereAS85 needs toaster to brown your bagel.
+Platforms: Ubuntu 14.04, 15.04
 
 Attributes
 ----------
-TODO: List your cookbook attributes here.
+default['FTPlogin']['binaryhost'] = 'Enter the IP you want to ssh/scp to'
+default['FTPlogin']['ftploginuser'] = 'user name you want to ssh with'
+default['FTPlogin']['binarydir'] = 'Location where you store your files'
+default['FTPlogin']['ftploginpwd'] = 'Password for the user above'
 
-e.g.
-#### WebSphereAS85::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['WebSphereAS85']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
 
 Usage
 -----
-#### WebSphereAS85::default
-TODO: Write usage instructions for each cookbook.
+Add to the node's run list
 
-e.g.
-Just include `WebSphereAS85` in your node's `run_list`:
+knife node run_list add  'recipe[FTPlogin::default]'
 
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[WebSphereAS85]"
-  ]
-}
-```
-
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write your change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
 
 License and Authors
 -------------------
-Authors: TODO: List authors
+Rohit Gabriel, Auckland, New Zealand
+Profile: https://nz.linkedin.com/in/rohit-gabriel-22a76320
