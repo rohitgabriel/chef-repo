@@ -9,9 +9,12 @@ Platforms: Ubuntu 14.04, 15.04
 
 Attributes
 ----------
-default['FTPlogin']['binaryhost'] = 'Enter the IP you want to ssh/scp to'
+default['FTPlogin']['binaryhost'] = 'Enter the IP address where the binaries are stored'
+
 default['FTPlogin']['ftploginuser'] = 'user name you want to ssh with'
+
 default['FTPlogin']['binarydir'] = 'Location where you store your files'
+
 default['FTPlogin']['ftploginpwd'] = 'Password for the user above'
 
 

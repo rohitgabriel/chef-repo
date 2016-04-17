@@ -15,20 +15,35 @@ Platforms: Ubuntu 15.04
 Attributes
 ----------
 default['InstallationManager']['version'] = '1.8.3'
+
 default['InstallationManager']['name'] = 'InstallationManager'
+
 default['InstallationManager']['message'] = 'Installing InstallationManager version 1.8 to /opt/IBM/InstallationManager'
+
 default['InstallationManager']['package-name-1'] = 'agent.installer.linux.gtk.x86_64_1.8.3000.20150606_0047.zip'
+
 default['InstallationManager']['binaryhost'] = 'Server where the binaries are stored'
+
 default['InstallationManager']['im_version'] = '1.8.3000.20150606_0047'
+
 default['InstallationManager']['im_install_dir'] = '/opt/IBM/InstallationManager'
+
 default['InstallationManager']['imshared_install_dir'] = 'opt/IBM/IMShared'
+
 default['InstallationManager']['imagentdata_install_dir'] = '/opt/IBM/IMAgentData'
+
 default['InstallationManager']['im-responsefile'] = 'install.xml'
+
 default['InstallationManager']['im-id'] = 'IBM Installation Manager'
+
 default['InstallationManager']['package1-sha256sum'] = 'b517395f37e7bfbeeb8481b83f4f280580a30bb972616aeb02056fa64d50a05e'
+
 default['InstallationManager']['imcl-path'] = '/opt/IBM/InstallationManager/eclipse/tools/imcl'
+
 default['InstallationManager']['imcl-packageid'] = 'com.ibm.cic.agent_1.8.3000.20150606_0047'
+
 default['InstallationManager']['ftploginuser'] = 'User to login to the binary host with'
+
 default['InstallationManager']['ftppath'] = 'Path where the binaries are stored'
 
 Usage
