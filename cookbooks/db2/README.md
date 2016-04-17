@@ -1,68 +1,59 @@
 db2 Cookbook
 ============
-TODO: Enter the cookbook description here.
 
-e.g.
-This cookbook makes your favorite breakfast sandwich.
+
+This cookbook installs IBM DB2 Enterprise Server version 10.1.1 at /opt/IBM/InstallationManager path.
+This cookbook creates a DB2 instance with three databases in it. The names of the databases are specific to the WebSphere BPM requirements.
+
+This cookbook can be used with my FTPlogin cookbook to scp binaries required to copy. I am not including the binaries in this cookbook.
+
+The code also verifies the checksum of the files after copying to the node. The install will fail if the checksum fails.
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
-
-e.g.
-#### packages
-- `toaster` - db2 needs toaster to brown your bagel.
+Platforms: Ubuntu 15.04
 
 Attributes
 ----------
-TODO: List your cookbook attributes here.
+default['db2']['package-name-1'] = 'DB2_ESE_10_Linux_x86-64.tar.gz'
+default['db2']['binaryhost'] = 'Server where binaries are hosted'
+default['db2']['ftploginuser'] = 'User to login to the binary host'
+default['db2']['ftppath'] = 'Path where binaries are stored'
+default['db2']['package1-sha256sum'] = 'b7b0e3902ffcfa4851e542e7ddb345623f2391635f212cc62113dee48e6b64f3'
+default['db2']['db2-responsefile'] = 'db2_Response_File_Install.rsp'
+default['db2']['db2inst1-INS'] = 'db2inst1.rsp'
+default['db2']['db2_install_dir'] = '/opt/ibm/db2/10.1'
+default['db2']['install_type'] = 'CUSTOM'
+default['db2']['db2inst1-user'] = 'db2inst1'
+default['db2']['db2fence1-user'] = 'db2fenc1'
+default['db2']['db2inst1-group'] = 'db2iadm1'
+default['db2']['db2fence1-group'] = 'db2fadm1'
+default['db2']['db2_password'] = 'W1zplay11'
+default['db2']['db2inst1-home'] = '/home/db2inst1'
+default['db2']['db2fence1-home'] = '/home/db2fenc1'
+default['db2']['db2user1-home'] = '/home/bpmuser'
+default['db2']['db2user1-user'] = 'bpmuser'
+default['db2']['db2user1-group'] = 'bpmuser'
+default['db2']['packagefp1-name-1'] = 'v10.1fp1_linuxx64_server.tar.gz'
+default['db2']['packagefp1-sha256sum'] = 'cc3d67599f19a3d9b6bcbd2cead27404564fc05ba8909da49891939ad7e0beff'
 
-e.g.
-#### db2::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['db2']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
 
 Usage
 -----
-#### db2::default
-TODO: Write usage instructions for each cookbook.
+Add to the node's run list
 
-e.g.
-Just include `db2` in your node's `run_list`:
+knife node run_list remove BPMNode 'recipe[db2::default]'
+knife node run_list remove BPMNode 'recipe[db2::installfp]'
+knife node run_list remove BPMNode 'recipe[db2::instance]'
+knife node run_list remove BPMNode 'recipe[db2::createdb]'
 
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[db2]"
-  ]
-}
-```
-
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write your change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
+recipe::default installs Db2 10.1
+recipe::installfp installs Db2 10.1.1 fixpack
+recipe::instance creates Db2 database instance
+recipe::createdb creates three Db2 databases required for WebSphere BPM
 
 License and Authors
 -------------------
-Authors: TODO: List authors
+Rohit Gabriel, Auckland, New Zealand.
+
+Profile: https://nz.linkedin.com/in/rohit-gabriel-22a76320

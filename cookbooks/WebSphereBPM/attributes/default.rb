@@ -27,20 +27,10 @@ default['WebSphereBPM']['db2password'] = 'W1zplay11'
 default['WebSphereBPM']['bpmuser'] = 'bpmadmin'
 default['WebSphereBPM']['bpmpassword'] = 'W1zplay11'
 
-default['WebSphereBPM']['Advanced-PS-ThreeClusters-DB2-props'] = 'Advanced-PS-ThreeClusters-DB2.properties' 
+default['WebSphereBPM']['Advanced-PS-ThreeClusters-DB2-props'] = 'Advanced-PS-ThreeClusters-DB2.properties'
 default['WebSphereBPM']['bpmdmgrnodename'] = 'DMGRNode'
 default['WebSphereBPM']['bpmcellname'] = 'BPMCell'
 default['WebSphereBPM']['bpmdmgrpath'] = '/opt/IBM/WebSphere/BPM/v8.5/profiles/Dmgr'
 default['WebSphereBPM']['bpmdmgrname'] = 'Dmgr'
 default['WebSphereBPM']['bpmdmgrsoapport'] = '8879'
 default['WebSphereBPM']['bpmnodename'] = 'ManagedAppServers'
-
-
-
-
-# default['WebSphereBPM']['package-name-1'] = 'WAS_V8.5.5_1_OF_3'
-# default['WebSphereBPM']['package-name-2'] = 'WAS_V8.5.5_2_OF_3'
-# default['WebSphereBPM']['package-name-3'] = 'WAS_V8.5.5_3_OF_3'
-# default['WebSphereBPM']['package1-sha256sum'] = '6b6e92180c1debd50fb74b83f836474bcc72ed387441408a42f14d3fffcb5292'
-# default['WebSphereBPM']['package2-sha256sum'] = '287179676db4a8b647a4b586d1bc8695d44a68c983b5719508c2e5631a044d65'
-# default['WebSphereBPM']['package3-sha256sum'] = '2f811a8a1b0973c68c2f8220a6cb6f1a1bd374cad2ade204e74f61b096a7ffd5'

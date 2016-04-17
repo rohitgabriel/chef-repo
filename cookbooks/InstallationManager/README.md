@@ -1,68 +1,44 @@
 InstallationManager Cookbook
 ============================
-TODO: Enter the cookbook description here.
 
-e.g.
-This cookbook makes your favorite breakfast sandwich.
+
+This cookbook installs IBM Installation Manager version 1.8.3 at /opt/IBM/InstallationManager path.
+
+This cookbook can be used with my FTPlogin cookbook to scp binaries required to copy. I am not including the binaries in this cookbook.
+
+The code also verifies the checksum of the files after copying to the node. The install will fail if the checksum fails.
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
-
-e.g.
-#### packages
-- `toaster` - InstallationManager needs toaster to brown your bagel.
+Platforms: Ubuntu 15.04
 
 Attributes
 ----------
-TODO: List your cookbook attributes here.
-
-e.g.
-#### InstallationManager::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['InstallationManager']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+default['InstallationManager']['version'] = '1.8.3'
+default['InstallationManager']['name'] = 'InstallationManager'
+default['InstallationManager']['message'] = 'Installing InstallationManager version 1.8 to /opt/IBM/InstallationManager'
+default['InstallationManager']['package-name-1'] = 'agent.installer.linux.gtk.x86_64_1.8.3000.20150606_0047.zip'
+default['InstallationManager']['binaryhost'] = 'Server where the binaries are stored'
+default['InstallationManager']['im_version'] = '1.8.3000.20150606_0047'
+default['InstallationManager']['im_install_dir'] = '/opt/IBM/InstallationManager'
+default['InstallationManager']['imshared_install_dir'] = 'opt/IBM/IMShared'
+default['InstallationManager']['imagentdata_install_dir'] = '/opt/IBM/IMAgentData'
+default['InstallationManager']['im-responsefile'] = 'install.xml'
+default['InstallationManager']['im-id'] = 'IBM Installation Manager'
+default['InstallationManager']['package1-sha256sum'] = 'b517395f37e7bfbeeb8481b83f4f280580a30bb972616aeb02056fa64d50a05e'
+default['InstallationManager']['imcl-path'] = '/opt/IBM/InstallationManager/eclipse/tools/imcl'
+default['InstallationManager']['imcl-packageid'] = 'com.ibm.cic.agent_1.8.3000.20150606_0047'
+default['InstallationManager']['ftploginuser'] = 'User to login to the binary host with'
+default['InstallationManager']['ftppath'] = 'Path where the binaries are stored'
 
 Usage
 -----
-#### InstallationManager::default
-TODO: Write usage instructions for each cookbook.
+Add to the node's run list
 
-e.g.
-Just include `InstallationManager` in your node's `run_list`:
-
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[InstallationManager]"
-  ]
-}
-```
-
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write your change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
+knife node run_list add <node name> 'recipe[InstallationManager::default]'
 
 License and Authors
 -------------------
-Authors: TODO: List authors
+Rohit Gabriel, Auckland, New Zealand.
+
+Profile: https://nz.linkedin.com/in/rohit-gabriel-22a76320
