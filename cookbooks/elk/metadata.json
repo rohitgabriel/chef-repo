@@ -1,0 +1,46 @@
+{
+  "name": "elk",
+  "description": "setup elk: logstash, elasticsearch and kibana",
+  "long_description": "elk Cookbook\n================\nsetup elk: logstash, elasticsearch and kibana\n\nls /opt/logstash/server\n\nls /usr/local/kibana\n\nls /usr/local/elasticsearch\n",
+  "maintainer": "DennyZhang",
+  "maintainer_email": "denny.zhang001@gmail.com",
+  "license": "All rights reserved",
+  "platforms": {
+    "ubuntu": ">= 14.04"
+  },
+  "dependencies": {
+    "apt": "= 2.6.1",
+    "java": "= 1.31.0",
+    "line": "~> 0.5",
+    "ark": "~> 0.9",
+    "elasticsearch": "~> 0.3.10",
+    "logstash": "= 0.12.0"
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+
+  },
+  "version": "0.3.1",
+  "source_url": "",
+  "issues_url": ""
+}

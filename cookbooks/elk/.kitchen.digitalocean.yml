@@ -1,0 +1,24 @@
+---
+driver:
+  name: digitalocean
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: kitchen-elk
+    driver_config:
+      region: sfo1
+      size: 8gb
+      private_networking: false
+      image: ubuntu-14-04-x64
+      server_name: kitchen-elk
+
+suites:
+  - name: default
+    run_list:
+      - recipe[apt::default]
+      - recipe[elk::default]
+    attributes:
+        {os_basic:
+                {enable_firewall: '0'}}

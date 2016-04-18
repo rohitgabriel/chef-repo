@@ -1,0 +1,22 @@
+---
+driver:
+  name: vagrant
+driver_config:
+  use_sudo: false
+  provision_command: "curl -L https://www.opscode.com/chef/install.sh | bash"
+  server_name: vagrant-ubuntu-1404
+  customize:
+      name: vagrant-elk
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: default
+    run_list:
+      - recipe[apt::default]
+      - recipe[elk::default]
+    attributes:
