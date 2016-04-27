@@ -1,9 +1,0 @@
-AllCops:
-  Excludes:
-    - 'test/integration/default/serverspec/server_spec.rb'
-
-Style/Next:
-  Enabled: false
-
-Metrics/LineLength:
-  Max: 90

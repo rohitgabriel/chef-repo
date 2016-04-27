@@ -87,14 +87,23 @@ Usage
 Add to the node's run list
 
 knife node run_list remove BPMNode 'recipe[FTPlogin::default]'
+
 knife node run_list remove BPMNode 'recipe[InstallationManager::default]'
+
 knife node run_list remove BPMNode 'recipe[db2::default]'
+
 knife node run_list remove BPMNode 'recipe[db2::installfp]'
+
 knife node run_list remove BPMNode 'recipe[db2::instance]'
+
 knife node run_list remove BPMNode 'recipe[db2::createdb]'
+
 knife node run_list remove BPMNode 'recipe[WebSphereBPM::default]'
+
 knife node run_list remove BPMNode 'recipe[WebSphereBPM::createDE]'
+
 knife node run_list remove BPMNode 'recipe[WebSphereBPM::bootstrap]'
+
 knife node run_list remove BPMNode 'recipe[WebSphereBPM::startDE]'
 
 License and Authors
