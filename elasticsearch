@@ -1,0 +1,3 @@
+knife node run_list add ESNode 'recipe[ELK::installJava8]'
+knife node run_list add ESNode 'recipe[ELK::installElasticSearch]'
+knife node run_list add ESNode 'recipe[ELK::installKibana]'
