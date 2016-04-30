@@ -1,0 +1,1 @@
+knife node run_list add BPMNode 'recipe[ELK::installFileBeatOnClient]'

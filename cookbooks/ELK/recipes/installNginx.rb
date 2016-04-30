@@ -1,3 +1,14 @@
+template "/etc/hosts" do
+  source 'hosts.erb'
+  #variables(
+  #file: "#{node['db2']['db2_install_dir']}",
+  #install_type: "#{node['db2']['install_type']}",
+  #db2password: "#{node['db2']['db2_password']}"
+  #)
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
 
 execute 'apt-get-update' do
   action :run
@@ -11,7 +22,7 @@ end
 
 execute 'create-adminuser' do
   action :run
-    command "htpasswd -c /etc/nginx/htpasswd.users wizplay -P wizplay"
+    command "htpasswd -b -c /etc/nginx/htpasswd.users wizplay wizplay"
 end
 
 template "/etc/nginx/sites-available/default" do

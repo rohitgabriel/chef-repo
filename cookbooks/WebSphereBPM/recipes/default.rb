@@ -42,6 +42,13 @@ template "/etc/security/limits.conf" do
   mode '0644'
 end
 
+Chef::Log.info("Updating /etc/hosts file")
+template "/etc/hosts" do
+  source 'hosts.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
 
 directory bpmbinary_dir do
   owner 'root'
@@ -91,7 +98,7 @@ binaries.each { | package_name |
 	#   group 'root'
 	#   mode '0644'
 	#   source "#{node['WebSphereBPM']['webserver']}/#{package_name}"
-	# end  
+	# end
 Chef::Log.info("copying packages")
 	execute 'copy-BPM' do
 	  action :run

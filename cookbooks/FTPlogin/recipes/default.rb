@@ -18,7 +18,7 @@
 
 
 Chef::Log.info("Setting up passwordless ssh to #{node['FTPlogin']['binaryhost']}")
-execute 'install-db2' do
+execute 'update-packages' do
   command "apt-get update; apt-mark hold grub-pc; apt-get -y upgrade"
   action :run
 end
