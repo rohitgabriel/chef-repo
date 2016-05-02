@@ -8,7 +8,7 @@ end
 
 execute 'passwordless-ssh' do
   action :run
-  command "cp /tmp/logstash-forwarder.crt /etc/pki/tls/certs/; chown root:root /etc/pki/tls/certs/logstash-forwarder.crt"
+  command "cp /tmp/logstash-forwarder.crt /etc/pki/tls/certs/; chown -R root:root /etc/pki/tls; chmod 755 -R /etc/pki/tls"
 end
 
 execute 'create-filebeat-sourcelist' do
